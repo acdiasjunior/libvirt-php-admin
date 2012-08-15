@@ -9,6 +9,11 @@ require_once 'classes/libvirt.php';
 
 $lib = new LibVirt();
 $lib->connect();
+
+if ($lib->isConnected()) {
+    $dom = new Domain($_REQUEST['domain'], $lib->getConnection(), true);
+    $snapshot = $dom->createSnapshot();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,25 +25,10 @@ $lib->connect();
     <body>
         <h2>Virtualização KVM</h2>
         <h4>
-            Domínios ativos:
+            Criar snapshot:
         </h4>
-        <ul>
-            <?php
-            if ($lib->isConnected()) {
-                foreach ($lib->getDomainsActives() as $dominio) {
-                    echo '<li>' . $dominio->getName() . '</li>';
-                    $snapshots = $dominio->listSnapshots();
-                    if (count($snapshots) > 0) {
-                        echo '<ul>';
-                        foreach ($snapshots as $snapshot) {
-                            echo sprintf('<li>Snapshot %s (%s)</li>', $snapshot, date('d/m/Y H:i:s', $snapshot));
-                        }
-                        echo '</ul>';
-                    }
-                }
-            }
-            ?>
-        </ul>
+        Domínio: <?= $_REQUEST['domain'] ?>
+        <?= var_dump($snapshot) ?>
         <br />
     </body>
 </html>

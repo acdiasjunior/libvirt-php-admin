@@ -32,60 +32,53 @@ class LibVirt
          * @author Junior Dias (acdiasjunior@gmail.com)
          * @return Boolean Retorna true (conectado) ou false (nao conectado)
          */
-        try {
-            $this->_conn = libvirt_connect($this->_uri, false);
-            if ($this->_conn === false) {
-                throw new Exception("Erro!");
-            }
-        } catch (Exception $e) {
-            echo "Erro ao conectar ao libvirt: ", $e->getMessage(), "<br />\n";
-            echo "Erro informado: " . libvirt_get_last_error() . "<br />\n";
+        $this->_conn = libvirt_connect($this->_uri, false);
+        if (!$this->isConnected()) {
+            throw new Exception("Erro ao conectar: " . libvirt_get_last_error());
         }
     }
 
     public function isConnected()
     {
-        if ($this->_conn === false) {
-            return false;
-        }
-        return true;
+        return is_resource($this->_conn);
     }
 
     public function getHostName()
     {
-        if ($this->isConnected()) {
-            return libvirt_connect_get_hostname($this->_conn);
-        } else {
-            return "Não conectado!";
+        return libvirt_connect_get_hostname($this->getConnection());
+    }
+
+    public function getConnection()
+    {
+        if (!$this->isConnected()) {
+            $this->connect();
         }
+
+        if ($this->isConnected()) {
+            return $this->_conn;
+        }
+
+        throw new Exception('Sem conexão ao libvirt');
     }
 
     public function getDomainsActives()
     {
         $domains = array();
-        if ($this->isConnected()) {
-            foreach (libvirt_list_active_domains($this->_conn) as $dom) {
-                $d = new Domain($dom, $this->_conn, true);
-                $domains[] = $d;
-            }
-            return $domains;
-        } else {
-            return array();
+        foreach (libvirt_list_active_domains($this->getConnection()) as $dom) {
+            $d = new Domain($dom, $this->_conn, true);
+            $domains[] = $d;
         }
+        return $domains;
     }
 
     public function getDomainsInactives()
     {
         $domains = array();
-        if ($this->isConnected()) {
-            foreach (libvirt_list_inactive_domains($this->_conn) as $dom) {
-                $d = new Domain($dom, $this->_conn, false);
-                $domains[] = $d;
-            }
-            return $domains;
-        } else {
-            return array();
+        foreach (libvirt_list_inactive_domains($this->getConnection()) as $dom) {
+            $d = new Domain($dom, $this->_conn, false);
+            $domains[] = $d;
         }
+        return $domains;
     }
 
 }
