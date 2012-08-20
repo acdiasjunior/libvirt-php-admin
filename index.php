@@ -14,7 +14,7 @@ $app = new Silex\Application();
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.options' => array('debug' => true),
-    'twig.path' => __DIR__.'/app/views',
+    'twig.path' => __DIR__ . '/app/views',
 ));
 
 require_once __DIR__ . '/app/classes/LibvirtAdmin/Autoloader.php';
@@ -24,8 +24,8 @@ LibvirtAdmin\Autoloader::register();
 require_once __DIR__ . '/app/controllers/DomainController.php';
 require_once __DIR__ . '/app/controllers/SnapshotController.php';
 
-$app->get('/', function () {
-        return 'Libvirt Admin';
+$app->get('/', function () use ($app) {
+        return $app['twig']->render('index/index.twig');
     });
 
 $app->run();
