@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% block head %}
+    <link rel="stylesheet" href="style.css" />
+    <title>LibvirtAdmin - {% block title %}{% endblock %}</title>
+{% endblock %}
+</head>
+<body>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <div id="footer">
+    {% block footer %}
+        &copy; Copyright 2012 by <a href="http://www.juniordias.com.br/">Júnior Dias</a>.
+    {% endblock %}
+    </div>
+</body>
+</html>
