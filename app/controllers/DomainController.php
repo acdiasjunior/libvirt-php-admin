@@ -2,7 +2,7 @@
 
 // Controller para o dominio das VMs
 
-$lib = new \LibvirtAdmin\Libvirt();
+$lib = new LibvirtAdmin\Libvirt();
 
 $domain = $app['controllers_factory'];
 

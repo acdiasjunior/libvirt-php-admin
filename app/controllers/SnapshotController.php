@@ -2,7 +2,7 @@
 
 // Controller para o snapshot das VMs
 
-$lib = new \LibvirtAdmin\Libvirt();
+$lib = new LibvirtAdmin\Libvirt();
 $snapshot = $app['controllers_factory'];
 
 $snapshot->get('/', function () {
