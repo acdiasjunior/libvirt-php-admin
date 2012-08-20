@@ -7,12 +7,12 @@
  * @version 1.0 (15/08/2012)
  */
 
-require_once 'domain.php';
+namespace LibvirtAdmin;
 
-class LibVirt
+class Libvirt
 {
     /*
-     * Classe utilizada para conexão ao libVirt
+     * Classe utilizada para conexão ao libvirt
      * @author Antonio Carlos (acdiasjunior@gmail.com)
      * @copyright GPL
      * @version 1.0 (15/08/2012)
@@ -65,7 +65,7 @@ class LibVirt
     {
         $domains = array();
         foreach (libvirt_list_active_domains($this->getConnection()) as $dom) {
-            $d = new Domain($dom, $this->_conn, true);
+            $d = new \LibvirtAdmin\Domain($dom, $this->_conn, true);
             $domains[] = $d;
         }
         return $domains;
@@ -75,7 +75,7 @@ class LibVirt
     {
         $domains = array();
         foreach (libvirt_list_inactive_domains($this->getConnection()) as $dom) {
-            $d = new Domain($dom, $this->_conn, false);
+            $d = new \LibvirtAdmin\Domain($dom, $this->_conn, false);
             $domains[] = $d;
         }
         return $domains;
