@@ -4,23 +4,18 @@
 
 $lib = new LibvirtAdmin\Libvirt();
 
+$name = 'dominio';
+
 $domain = $app['controllers_factory'];
 
-$domain->get('/', function () {
-        return 'Maquinas Virtuais';
+$domain->get('/', function () use ($app, $name) {
+        return $app['twig']->render($name . '/index.twig');
     });
 
-$domain->get('/lista', function() use ($lib) {
-        foreach ($lib->getDomainsActives() as $dominio) {
-            echo sprintf("<li>%s <a href=\"/snapshot/create/%s\">Criar snapshot</a></li>\n", $dominio->getName(), $dominio->getName());
-            if ($dominio->countSnapshots() > 0) {
-                echo '<ul>';
-                foreach ($dominio->listSnapshots() as $snapshot) {
-                    echo sprintf("<li>Snapshot %s (%s) <a href=\"removersnapshot.php?domain=%s&snapshot=%s\">Remover</a></li>\n", $snapshot, date('d/m/Y H:i:s', $snapshot), $dominio->getName(), $snapshot);
-                }
-                echo '</ul>';
-            }
-        }
+$domain->get('/lista', function() use ($app, $name, $lib) {
+        return $app['twig']->render($name . '/lista.twig', array(
+                'dominios' => $lib->getDomainsActives(),
+            ));
     });
 
-$app->mount('/dominio', $domain);
+$app->mount('/' . $name, $domain);
