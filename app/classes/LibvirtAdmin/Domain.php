@@ -16,6 +16,10 @@ class Domain
     private $_is_active;
     private $_snapshots;
     private $_conn;
+    private $_max_mem;
+    private $_memory;
+    private $_cpu;
+    private $_cpu_used;
 
     public function __construct($name, $conn, $is_active = false)
     {
@@ -24,6 +28,7 @@ class Domain
         $this->_is_active = $is_active;
         $this->_snapshots = $this->getSnapshots();
         $this->_res = $this->getResource();
+        $this->getInfo();
     }
 
     public function getName()
@@ -54,6 +59,35 @@ class Domain
     private function getResource()
     {
         return libvirt_domain_lookup_by_name($this->_conn, $this->_name);
+    }
+
+    private function getInfo()
+    {
+        $info = libvirt_domain_get_info($this->getResource());
+        $this->_max_mem = $info['maxMem'];
+        $this->_memory = $info['memory'];
+        $this->_cpu = $info['nrVirtCpu'];
+        $this->_cpu_used = $info['cpuUsed'];
+    }
+
+    public function getMaxMemory()
+    {
+        return $this->_max_mem;
+    }
+
+    public function getMemory()
+    {
+        return $this->_memory;
+    }
+
+    public function getCpu()
+    {
+        return $this->_cpu;
+    }
+
+    public function getCpuUsage()
+    {
+        return $this->_cpu_used;
     }
 
     private function getSnapshot($snapshot)
