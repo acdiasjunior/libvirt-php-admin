@@ -1,4 +1,4 @@
-{% extends "base/default.twig" %}
+{% extends 'base/default.twig' %}
 
 {% block title %}Index{% endblock %}
 {% block head %}
@@ -8,8 +8,5 @@
     </style>
 {% endblock %}
 {% block content %}
-    <h1>Index</h1>
-    <p class="important">
-        LibvirtAdmin PHP.
-    </p>
+    {% include 'base/dashboard.twig' %}
 {% endblock %}

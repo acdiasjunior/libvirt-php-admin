@@ -1,0 +1,6 @@
+<h1>Criar máquinas</h1>
+<ul>
+{% for dominio in dominios %}
+    <li>{{ dominio.getName() }}, {{ (dominio.getMemory() / 1024 ) }}/{{ (dominio.getMaxMemory() / 1024 ) }} MB</li>
+{% endfor %}
+</ul>

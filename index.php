@@ -6,7 +6,7 @@ ini_set('display_startup_errors', 1);
 ini_set('log_errors_max_len', 0);
 ini_set('error_log', 'syslog');
 
-set_include_path(implode(PATH_SEPARATOR, array(__DIR__, __DIR__ . '/app/classes')));
+set_include_path(implode(PATH_SEPARATOR, array(__DIR__, __DIR__ . '/app/classes', __DIR__ . '/app/controllers')));
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -21,11 +21,16 @@ require_once __DIR__ . '/app/classes/LibvirtAdmin/Autoloader.php';
 
 LibvirtAdmin\Autoloader::register();
 
-require_once __DIR__ . '/app/controllers/DomainController.php';
-require_once __DIR__ . '/app/controllers/SnapshotController.php';
+require_once 'IndexController.php';
+require_once 'DomainController.php';
+require_once 'SnapshotController.php';
 
-$app->get('/', function () use ($app) {
-        return $app['twig']->render('index/index.twig');
+$app->error(function (\Exception $e, $code) {
+        if ($code == 404) {
+            return "Erro ao processar a requisição.\n" . $e->getMessage();
+        }
+
+        return $e->getMessage();
     });
 
 $app->run();
