@@ -25,7 +25,7 @@ class Libvirt
     private $_uri = "qemu:///system"; // Caminhao para conexao libvirt
     private $_conn; // Resource de conexao libvirt
 
-    public function connect()
+    private function connect()
     {
         /*
          * Função para conexão ao libvirt
@@ -38,14 +38,9 @@ class Libvirt
         }
     }
 
-    public function isConnected()
+    private function isConnected()
     {
         return is_resource($this->_conn);
-    }
-
-    public function getHostName()
-    {
-        return libvirt_connect_get_hostname($this->getConnection());
     }
 
     public function getConnection()
@@ -59,26 +54,6 @@ class Libvirt
         }
 
         throw new Exception('Sem conexão ao libvirt');
-    }
-
-    public function getDomainsActives()
-    {
-        $domains = array();
-        foreach (libvirt_list_active_domains($this->getConnection()) as $dom) {
-            $d = new \LibvirtAdmin\Domain($dom, $this->_conn, true);
-            $domains[] = $d;
-        }
-        return $domains;
-    }
-
-    public function getDomainsInactives()
-    {
-        $domains = array();
-        foreach (libvirt_list_inactive_domains($this->getConnection()) as $dom) {
-            $d = new \LibvirtAdmin\Domain($dom, $this->_conn, false);
-            $domains[] = $d;
-        }
-        return $domains;
     }
 
 }

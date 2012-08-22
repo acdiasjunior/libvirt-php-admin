@@ -2,7 +2,7 @@
 
 // Controller para o dominio das VMs
 
-$lib = new LibvirtAdmin\Libvirt();
+$host = new LibvirtAdmin\Host();
 
 $name = 'dominios';
 
@@ -12,15 +12,15 @@ $domain->get('/', function () use ($app, $name) {
         return $app['twig']->render($name . '/index.twig');
     });
 
-$domain->get('/listar', function() use ($app, $name, $lib) {
+$domain->get('/listar', function() use ($app, $name, $host) {
         return $app['twig']->render($name . '/listar.twig', array(
-                'dominios' => $lib->getDomainsActives(),
+                'dominios' => $host->getDomainsActives(),
             ));
     });
 
-$domain->get('/criar', function() use ($app, $name, $lib) {
+$domain->get('/criar', function() use ($app, $name, $host) {
         return $app['twig']->render($name . '/criar.twig', array(
-                'dominios' => $lib->getDomainsActives(),
+                'dominios' => $host->getDomainsActives(),
             ));
     });
 
