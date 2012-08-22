@@ -29,7 +29,7 @@ class Host
         $this->_lib = new \LibvirtAdmin\Libvirt();
     }
 
-    private function getConnection()
+    public function getConnection()
     {
         return $this->_lib->getConnection();
     }
@@ -57,6 +57,12 @@ class Host
             $domains[] = $d;
         }
         return $domains;
+    }
+
+    public function getInfo()
+    {
+        $xml = libvirt_connect_get_sysinfo($this->getConnection());
+        return \LibvirtAdmin\Utils::xmlToArray($xml);
     }
 
 }

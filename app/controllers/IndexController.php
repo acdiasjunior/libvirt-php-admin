@@ -4,8 +4,12 @@
 
 $name = 'index';
 
-$app->get('/', function () use ($app, $name) {
-        return $app['twig']->render($name . '/index.twig');
+$host = new \LibvirtAdmin\Host();
+
+$app->get('/', function () use ($app, $name, $host) {
+        return $app['twig']->render($name . '/index.twig', array(
+                'hostInfo' => $host->getInfo(),
+            ));
     });
 
 $app->get('/dashboard', function () use ($app, $name) {

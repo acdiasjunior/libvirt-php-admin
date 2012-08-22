@@ -17,6 +17,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/app/views',
 ));
 
+$app['twig']->addFilter('var_dump', new \Twig_Filter_Function('var_dump'));
+
 require_once __DIR__ . '/app/classes/LibvirtAdmin/Autoloader.php';
 
 LibvirtAdmin\Autoloader::register();
