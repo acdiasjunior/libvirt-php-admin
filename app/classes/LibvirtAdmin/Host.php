@@ -59,7 +59,7 @@ class Host
         return $domains;
     }
 
-    public function getInfo()
+    public function getSysInfo()
     {
         $xml = libvirt_connect_get_sysinfo($this->getConnection());
         return \LibvirtAdmin\Utils::xmlToArray($xml);
