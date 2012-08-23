@@ -1,0 +1,18 @@
+{% include 'base/interna.twig' %}
+<h1>{{ dominio.getName() }}</h1>
+
+<img src="/app/assets/images/pc-icon{{ dominio.isActive() ? '' : '-shutoff' }}.png" style="width: 80px; height: 80px;" />
+
+<strong>Memória:</strong> {{ (dominio.getMemory() / 1024 ) }} / {{ (dominio.getMaxMemory() / 1024 ) }} MB<br />
+
+<strong>Status Memoria:</strong> {{ (dominio.getMemoryStats() | var_dump ) }}<br />
+
+<strong>Discos:</strong> {{ (dominio.getDiskDevices() | var_dump ) }}<br />
+
+{% if dominio.isActive() == false %}
+    <a href="/dominios/resume/{{ dominio.getName() }}" class="link-ajax">Startar a VM</a><br />
+{% endif %}
+
+<a href="/dominios/editar/{{ dominio.getName }}" class="link-ajax">Atualizar</a>
+
+<div style="clear: both;"></div>

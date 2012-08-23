@@ -39,11 +39,16 @@ class Host
         return libvirt_connect_get_hostname($this->getConnection());
     }
 
+    public function getDomain($domain)
+    {
+        return new \LibvirtAdmin\Domain($domain, $this->getConnection());
+    }
+
     public function getDomainsActives()
     {
         $domains = array();
         foreach (libvirt_list_active_domains($this->getConnection()) as $dom) {
-            $d = new \LibvirtAdmin\Domain($dom, $this->getConnection(), true);
+            $d = new \LibvirtAdmin\Domain($dom, $this->getConnection());
             $domains[] = $d;
         }
         return $domains;
@@ -53,7 +58,7 @@ class Host
     {
         $domains = array();
         foreach (libvirt_list_inactive_domains($this->getConnection()) as $dom) {
-            $d = new \LibvirtAdmin\Domain($dom, $this->getConnection(), false);
+            $d = new \LibvirtAdmin\Domain($dom, $this->getConnection());
             $domains[] = $d;
         }
         return $domains;

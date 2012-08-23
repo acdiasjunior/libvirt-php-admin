@@ -25,16 +25,22 @@ class Libvirt
     private $_uri = "qemu:///system"; // Caminhao para conexao libvirt
     private $_conn; // Resource de conexao libvirt
 
+    /*
+     * Função para conexão ao libvirt
+     * @author Junior Dias (acdiasjunior@gmail.com)
+     * @return Boolean Retorna true (conectado) ou false (nao conectado)
+     */
+
     private function connect()
     {
-        /*
-         * Função para conexão ao libvirt
-         * @author Junior Dias (acdiasjunior@gmail.com)
-         * @return Boolean Retorna true (conectado) ou false (nao conectado)
-         */
+        $logfile = LIBVIRT_DIR . '/test.log';
+        
+        if (!libvirt_logfile_set($logfile))
+            throw new \Exception('Erro ao abrir arquivo de log!');
+
         $this->_conn = libvirt_connect($this->_uri, false);
         if (!$this->isConnected()) {
-            throw new Exception("Erro ao conectar: " . libvirt_get_last_error());
+            throw new \Exception("Erro ao conectar: " . libvirt_get_last_error());
         }
     }
 
@@ -53,7 +59,7 @@ class Libvirt
             return $this->_conn;
         }
 
-        throw new Exception('Sem conexão ao libvirt');
+        throw new \Exception('Sem conexão ao libvirt');
     }
 
 }

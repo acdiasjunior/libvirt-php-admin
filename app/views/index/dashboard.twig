@@ -1,45 +1,44 @@
-<h1>Index</h1>
-<p class="important">
-    Libvirt PHP Admin.
-    <h3>Bios</h3>
-    <strong>Fabricante: </strong> {{ hostInfo.BIOS.Vendor }}<br />
-    <strong>Versão: </strong> {{ hostInfo.BIOS.Version }}<br />
-    <strong>Data: </strong> {{ hostInfo.BIOS.Date }}<br />
-    <strong>Release: </strong> {{ hostInfo.BIOS.Release }}<br />
+{% include 'base/interna.twig' %}
+<h1>Libvirt PHP Admin.</h1>
+<h3>Bios</h3>
+
+<strong>Fabricante: </strong> {{ hostInfo.BIOS.Vendor }}<br />
+<strong>Versão: </strong> {{ hostInfo.BIOS.Version }}<br />
+<strong>Data: </strong> {{ hostInfo.BIOS.Date }}<br />
+<strong>Release: </strong> {{ hostInfo.BIOS.Release }}<br />
+<br />
+<h3>Sistema</h3>
+<strong>Fabricante: </strong> {{ hostInfo.Sistema.Manufacturer }}<br />
+<strong>Produto: </strong> {{ hostInfo.Sistema.Product }}<br />
+<strong>Versão: </strong> {{ hostInfo.Sistema.Version }}<br />
+<strong>Nº Série: </strong> {{ hostInfo.Sistema.Serial }}<br />
+<strong>UUID: </strong> {{ hostInfo.Sistema.Uuid }}<br />
+<strong>Sku: </strong> {{ hostInfo.Sistema.Sku }}<br />
+<strong>Família: </strong> {{ hostInfo.Sistema.Family }}<br />
+<br />
+<h3>Processadores</h3>
+{% for number, processor in hostInfo.Processador if processor.Status != 'Unpopulated' %}
+    <h5>Processador #{{ number }}</h5>
+    <strong>Soquete: </strong> {{ processor.Socket_destination }}<br />
+    <strong>Tipo: </strong> {{ processor.Type }}<br />
+    <strong>Familia: </strong> {{ processor.Family }}<br />
+    <strong>Fabricante: </strong> {{ processor.Manufacturer }}<br />
+    <strong>Assinatura: </strong> {{ processor.Signature }}<br />
+    <strong>Versão: </strong> {{ processor.Version }}<br />
+    <strong>Clock: </strong> {{ processor.Max_speed }}<br />
     <br />
-    <h3>Sistema</h3>
-    <strong>Fabricante: </strong> {{ hostInfo.Sistema.Vendor }}<br />
-    <strong>Produto: </strong> {{ hostInfo.Sistema.Product }}<br />
-    <strong>Versão: </strong> {{ hostInfo.Sistema.Version }}<br />
-    <strong>Nº Série: </strong> {{ hostInfo.Sistema.Serial }}<br />
-    <strong>UUID: </strong> {{ hostInfo.Sistema.Uuid }}<br />
-    <strong>Sku: </strong> {{ hostInfo.Sistema.Sku }}<br />
-    <strong>Família: </strong> {{ hostInfo.Sistema.Family }}<br />
+{% endfor %}
+<h3>Memória</h3>
+{% for number, memory in hostInfo.Memória %}
+    <h5>DRAM #{{ number }}</h5>
+    <strong>Tamanho: </strong> {{ memory.Size }}<br />
+    <strong>Padrão: </strong> {{ memory.Form_factor }}<br />
+    <strong>Slot: </strong> {{ memory.Locator }}<br />
+    <strong>Tipo: </strong> {{ memory.Type }}<br />
+    <strong>Tipo registro: </strong> {{ memory.Type_detail }}<br />
+    <strong>Clock: </strong> {{ memory.Speed }}<br />
+    <strong>Fabricante: </strong> {{ memory.Manufacturer }}<br />
+    <strong>Nº Série: </strong> {{ memory.Serial_number }}<br />
+    <strong>Part number: </strong> {{ memory.Part_number }}<br />
     <br />
-    <h3>Processadores</h3>
-    {% for number, processor in hostInfo.Processador if processor.Status != 'Unpopulated' %}
-        <h5>Processador #{{ number }}</h5>
-        <strong>Soquete: </strong> {{ processor.Socket_destination }}<br />
-        <strong>Tipo: </strong> {{ processor.Type }}<br />
-        <strong>Familia: </strong> {{ processor.Family }}<br />
-        <strong>Fabricante: </strong> {{ processor.Manufacturer }}<br />
-        <strong>Assinatura: </strong> {{ processor.Signature }}<br />
-        <strong>Versão: </strong> {{ processor.Version }}<br />
-        <strong>Clock: </strong> {{ processor.Max_speed }}<br />
-        <br />
-    {% endfor %}
-    <h3>Memória</h3>
-    {% for number, memory in hostInfo.Memória %}
-        <h5>DRAM #{{ number }}</h5>
-        <strong>Tamanho: </strong> {{ memory.Size }}<br />
-        <strong>Padrão: </strong> {{ memory.Form_factor }}<br />
-        <strong>Slot: </strong> {{ memory.Locator }}<br />
-        <strong>Tipo: </strong> {{ memory.Type }}<br />
-        <strong>Tipo registro: </strong> {{ memory.Type_detail }}<br />
-        <strong>Clock: </strong> {{ memory.Speed }}<br />
-        <strong>Fabricante: </strong> {{ memory.Manufacturer }}<br />
-        <strong>Nº Série: </strong> {{ memory.Serial_number }}<br />
-        <strong>Part number: </strong> {{ memory.Part_number }}<br />
-        <br />
-    {% endfor %}
-</p>
+{% endfor %}

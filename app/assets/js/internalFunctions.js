@@ -1,16 +1,7 @@
-
 $(document).ready(function(){
-
-    function classCurrent(currentItem) {
-        $('.current').removeClass('current');
-        $(currentItem).addClass('current');
-        if($(currentItem).data('pai') != undefined) {
-            $('#' + $(currentItem).data('pai')).addClass('current');
-        }
-    }
-
-    // Captura os links com a classe nav-ajax e busca via ajax para exibir no main-content
-    $('.nav-ajax').on('click', function(event) {
+    
+    // Captura os links com a classe link-ajax e busca via ajax para exibir no main-content
+    $('.link-ajax').on('click', function(event) {
 
         event.preventDefault();
 
@@ -25,7 +16,6 @@ $(document).ready(function(){
                 }
             });
             $('#main-content-ajax').html(response);
-            classCurrent(event.target);
         });
 
         request.fail(function() {
