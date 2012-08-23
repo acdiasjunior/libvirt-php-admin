@@ -3,10 +3,13 @@
 <ul class="vm-domains">
 {% for dominio in dominios %}
     <li>
-        <a href="/dominios/editar/{{ dominio.getName }}" class="link-ajax"><img src="/app/assets/images/pc-icon-shutoff.png" style="width: 80px; height: 80px;" />
+        <a href="/dominios/editar/{{ dominio.getName }}" class="link-ajax">
+            <img src="/app/assets/images/pc-icon-shutoff.png" style="width: 80px; height: 80px;" />
             <ul>
                 <li><strong>{{ dominio.getName() }}</strong></li>
-                <li><strong>Memória:</strong> {{ (dominio.getMemory() / 1024 ) }} / {{ (dominio.getMaxMemory() / 1024 ) }} MB</li>
+                <li><strong>Memória:</strong>
+                    {{ (dominio.getMemory() / 1024 ) }} / {{ (dominio.getMaxMemory() / 1024 ) }} MB</li>
+                <li><strong>Uso de CPU:</strong> {{ dominio.getCpuUsage() }}</li>
             </ul>
         </a>
     </li>

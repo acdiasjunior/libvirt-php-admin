@@ -4,20 +4,22 @@
 
 $host = new LibvirtAdmin\Host();
 
-$snapshot = $app['controllers_factory'];
+$name = 'snapshots';
 
-$snapshot->get('/', function () {
+$snapshots = $app['controllers_factory'];
+
+$snapshots->get('/', function () {
     return 'Snapshots';
 });
 
-$snapshot->get('/create/{vm}', function ($vm) use ($host) {
-    $domain = new \LibvirtAdmin\Domain($vm, $host->getConnection());
-    return $domain->createSnapshot();
+$snapshots->get('/delete/{domain}/{snapshot}', function ($domain, $snapshot) use ($host) {
+    return $host->getSnapshot($snapshot, $host->getDomain($domain))->delete();
 });
 
-$snapshot->get('/delete/{vm}/$snapshot', function ($vm, $snapshot) use ($host) {
-    $domain = new \LibvirtAdmin\Domain($vm, $host->getConnection());
-    return $domain->createSnapshot();
+$snapshots->get('/xml/{domain}/{snapshot}', function ($snapshot, $domain) use ($host, $app, $name) {
+    return $app['twig']->render($name . '/xml.twig', array(
+            'snapshot' => $host->getSnapshot($snapshot, $host->getDomain($domain)),
+        ));
 });
 
-$app->mount('/snapshot', $snapshot);
+$app->mount('/snapshots', $snapshots);

@@ -36,6 +36,10 @@ $domain->get('/editar/{vm}', function($vm) use ($app, $name, $host) {
             ));
     });
 
+$domain->get('/createSnapshot/{vm}', function ($vm) use ($host) {
+    return $host->getDomain($vm)->createSnapshot();
+});
+
 $domain->get('/resume/{vm}', function($vm) use ($host) {
         $host->getDomain($vm)->domainResume();
     });

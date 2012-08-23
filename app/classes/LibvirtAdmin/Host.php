@@ -44,6 +44,11 @@ class Host
         return new \LibvirtAdmin\Domain($domain, $this->getConnection());
     }
 
+    public function getSnapshot($snapshot, $domain)
+    {
+        return new \LibvirtAdmin\Snapshot($snapshot, $domain);
+    }
+
     public function getDomainsActives()
     {
         $domains = array();

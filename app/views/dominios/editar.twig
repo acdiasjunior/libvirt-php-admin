@@ -1,18 +1,35 @@
 {% include 'base/interna.twig' %}
-<h1>{{ dominio.getName() }}</h1>
+<h2>{{ dominio.getName() }}</h2>
 
 <img src="/app/assets/images/pc-icon{{ dominio.isActive() ? '' : '-shutoff' }}.png" style="width: 80px; height: 80px;" />
+<br />
+<h4>Memória:</h4>
+<strong>Alocada:</strong> {{ (dominio.getMemory() / 1024 ) }} MB<br />
+<strong>Máxima:</strong> {{ (dominio.getMaxMemory() / 1024 ) }} MB<br />
 
-<strong>Memória:</strong> {{ (dominio.getMemory() / 1024 ) }} / {{ (dominio.getMaxMemory() / 1024 ) }} MB<br />
+<h4>Discos:</h4>
+<ul>
+{% for disk in dominio.getDiskDevices() %}
+    <li>{{ disk }}</li>
+{% endfor %}
+</ul>
 
-<strong>Status Memoria:</strong> {{ (dominio.getMemoryStats() | var_dump ) }}<br />
-
-<strong>Discos:</strong> {{ (dominio.getDiskDevices() | var_dump ) }}<br />
+<h4>Snapshots:</h4>
+<ul>
+{% for snapshot in dominio.listSnapshots()|sort|reverse %}
+    <li>
+        <a href="/snapshots/xml/{{ dominio.getName() }}/{{ snapshot }}" class="link-ajax">{{ snapshot|date("d/m/Y H:i:s") }}</a>
+        <a href="/snapshots/delete/{{ dominio.getName() }}/{{ snapshot }}" class="link-ajax">Excluir</a>
+        <a href="/snapshots/reverter/{{ dominio.getName() }}/{{ snapshot }}" class="link-ajax">Reverter</a>
+    </li>
+{% endfor %}
+</ul>
 
 {% if dominio.isActive() == false %}
     <a href="/dominios/resume/{{ dominio.getName() }}" class="link-ajax">Startar a VM</a><br />
 {% endif %}
 
-<a href="/dominios/editar/{{ dominio.getName }}" class="link-ajax">Atualizar</a>
+<a href="/dominios/createSnapshot/{{ dominio.getName }}" class="link-ajax">Criar Snapshot</a>
+<a href="/dominios/editar/{{ dominio.getName }}" class="link-ajax">Atualizar</a><br />
 
 <div style="clear: both;"></div>

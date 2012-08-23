@@ -24,8 +24,6 @@ class Domain
     {
         $this->_name = $name;
         $this->_conn = $conn;
-        $this->_snapshots = $this->getSnapshots();
-        $this->_res = $this->getResource();
         $this->getInfo();
     }
 
@@ -54,7 +52,7 @@ class Domain
         return libvirt_list_domain_snapshots($this->getResource($this->_name));
     }
 
-    private function getResource()
+    public function getResource()
     {
         if (!is_resource($this->_res)) {
             $this->_res = libvirt_domain_lookup_by_name($this->_conn, $this->_name);
@@ -64,12 +62,16 @@ class Domain
             return $this->_res;
         }
 
-        throw new \Exception('Erro ao capturar Resource do dominio.');
+        throw new \Exception('Erro ao capturar Resource do dominio.<br />' . var_dump($this));
     }
 
     private function getInfo()
     {
+        $this->_res = $this->getResource();
+        $this->_snapshots = $this->getSnapshots();
+
         $info = libvirt_domain_get_info($this->getResource());
+
         $this->_memory_max = $info['maxMem'];
         $this->_memory = $info['memory'];
         $this->_cpu = $info['nrVirtCpu'];
@@ -109,15 +111,6 @@ class Domain
         }
 
         throw new \Exception('Falha ao criar o snapshot!');
-    }
-
-    public function deleteSnapshot($snapshot)
-    {
-        if (libvirt_domain_snapshot_delete($this->getSnapshot($snapshot), 0)) {
-            return 'Snapshot excluído com sucesso!';
-        }
-
-        throw new \Exception('Falha ao remover o snapshot!');
     }
 
     public function getDiskDevices()

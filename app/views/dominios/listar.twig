@@ -7,6 +7,7 @@
             <ul>
                 <li><strong>{{ dominio.getName() }}</strong></li>
                 <li><strong>Memória:</strong> {{ (dominio.getMemory() / 1024 ) }} / {{ (dominio.getMaxMemory() / 1024 ) }} MB</li>
+                <li><strong>Uso de CPU:</strong> {{ dominio.getCpuUsage() }}</li>
             </ul>
         </a>
     </li>
