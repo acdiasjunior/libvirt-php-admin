@@ -33,10 +33,13 @@ class Libvirt
 
     private function connect()
     {
-        $logfile = LIBVIRT_DIR . '/test.log';
-        
-        if (!libvirt_logfile_set($logfile))
+        $debug = false;
+
+        $logfile = LIBVIRT_DIR . '/libvirt.log';
+
+        if ($debug == true && !libvirt_logfile_set($logfile)) {
             throw new \Exception('Erro ao abrir arquivo de log!');
+        }
 
         $this->_conn = libvirt_connect($this->_uri, false);
         if (!$this->isConnected()) {

@@ -132,11 +132,7 @@ class Domain
 
     public function domainResume()
     {
-        ini_set('error_reporting', \E_ALL);
-        ini_set('display_errors', 1);
         $cmd = sprintf('virsh start %s', $this->getName());
-        posix_setgid(0);
-        posix_setuid(0);
         exec($cmd, $saida, $ret);
 
         if ((int) $ret !== 0) {
