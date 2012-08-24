@@ -133,6 +133,39 @@ class Domain
         }
     }
 
+    public function getVncPort()
+    {
+        $cmd = sprintf('virsh vncdisplay %s', $this->getName());
+        $out = exec($cmd, $saida, $ret);
+
+        if ((int) $ret !== 0) {
+            throw new \Exception('Erro ao pegar a porta vnc para o dominio:<br />' . print_r($saida, true) . '<br />' . $cmd);
+        }
+
+        return '59' . str_pad(str_replace(':', '', $saida[0]), 2, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     *
+     * @return \DateTime
+     */
+    public function getStartTime()
+    {
+        $file = sprintf('/var/log/libvirt/qemu/%s.log', $this->getName());
+        $log = file_get_contents($file);
+        $regex = '/([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{1,2})/msi';
+        preg_match_all($regex, $log, $resultado);
+        $date = new \DateTime(array_pop($resultado[0]), new \DateTimeZone('Europe/London'));
+        return $date->setTimezone(new \DateTimeZone('America/Sao_Paulo'));
+    }
+
+    public function getCpuAvg()
+    {
+        $start = strtotime($this->getStartTime()->format('Y-m-d H:i:s'));
+        $now = time();
+        return number_format($this->getCpuUsage() / ($now - $start),3);
+    }
+
 //    libvirt_domain_new($conn, $name, $arch, $memMB, $maxmemMB, $vcpus, $iso_image, $disks, $networks, $flags)
 //libvirt_domain_new_get_vnc($one)
 //libvirt_domain_get_xml_desc($res, $xpath)
@@ -145,7 +178,6 @@ class Domain
 //libvirt_domain_disk_remove($res, $dev, $flags)
 //libvirt_domain_nic_add($res, $mac, $network, $model, $flags)
 //libvirt_domain_nic_remove($res, $dev, $flags)
-//libvirt_domain_get_info($res)
 //libvirt_domain_create($res)
 //libvirt_domain_destroy($res)
 //libvirt_domain_resume($res)

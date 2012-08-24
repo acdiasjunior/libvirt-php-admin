@@ -37,11 +37,17 @@ $domain->get('/editar/{vm}', function($vm) use ($app, $name, $host) {
     });
 
 $domain->get('/createSnapshot/{vm}', function ($vm) use ($host) {
-    return $host->getDomain($vm)->createSnapshot();
-});
+        return $host->getDomain($vm)->createSnapshot();
+    });
 
 $domain->get('/resume/{vm}', function($vm) use ($host) {
         $host->getDomain($vm)->domainResume();
+    });
+
+$domain->get('/vnc/{vm}', function($vm) use ($app, $name, $host) {
+        return $app['twig']->render($name . '/vnc.twig', array(
+                'dominio' => $host->getDomain($vm),
+            ));
     });
 
 $app->mount('/' . $name, $domain);

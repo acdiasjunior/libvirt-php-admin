@@ -1,0 +1,10 @@
+{% include 'base/interna.twig' %}
+<APPLET ARCHIVE="/app/assets/TightVncViewer.jar"
+        CODE="com.tightvnc.vncviewer.VncViewer"
+        WIDTH="1" HEIGHT="1">
+    <PARAM NAME="HOST" VALUE="192.168.1.230">
+    <PARAM NAME="PORT" VALUE="{{ dominio.getVncPort() }}">
+    <PARAM NAME="Open New Window" VALUE="yes">
+</APPLET>
+<p>A janela do VNC está aberta. Pode clicar <a href="/dominios/editar/{{ dominio.getName }}" class="link-ajax">aqui</a>
+para voltar.</p>

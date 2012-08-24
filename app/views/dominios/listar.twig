@@ -7,7 +7,9 @@
             <ul>
                 <li><strong>{{ dominio.getName() }}</strong></li>
                 <li><strong>Memória:</strong> {{ (dominio.getMemory() / 1024 ) }} / {{ (dominio.getMaxMemory() / 1024 ) }} MB</li>
-                <li><strong>Uso de CPU:</strong> {{ dominio.getCpuUsage() }}</li>
+                <li><strong>Número de vCPU:</strong> {{ dominio.getCpu() }}</li>
+                <li><strong>Média consumo CPU:</strong> {{ dominio.getCpuAvg() }}</li>
+                <li><strong>Ativa desde:</strong> {{ dominio.getStartTime().format('d/m/Y H:i:s') }}</li>
             </ul>
         </a>
     </li>
